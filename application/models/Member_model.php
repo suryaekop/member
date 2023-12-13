@@ -58,5 +58,14 @@ class Member_model extends CI_Model{
             return false;
         }
     }
+    public function save_otp($email, $otp) {
+        $data = array(
+            'otp' => $otp,
+            'otp_created_at' => date('Y-m-d H:i:s'),
+        );
+
+        $this->db->where('email', $email);
+        $this->db->update('member', $data); // Replace 'members' with your actual table name
+    }
     
 }

@@ -17,14 +17,14 @@
                             <?= $this->session->flashdata('pesan'); ?>
                             <?php echo form_open_multipart('member/login_member'); ?>
                             <div class="form-group">
-                                <input autofocus="autofocus" autocomplete="off" value="<?= set_value('nomor'); ?>" type="text" name="nohp" class="form-control form-control-user" placeholder="Masukkan Email">
-                                <?= form_error('username', '<small class="text-danger">', '</small>'); ?>
+                                <input autofocus="autofocus" autocomplete="off" value="<?= set_value('email'); ?>" type="email" name="email" class="form-control form-control-user" placeholder="Masukkan Email">
+                                <?= form_error('email', '<small class="text-danger">', '</small>'); ?>
                             </div>
                             <button type="submit" class="btn btn-primary btn-user btn-block">
                                 Login
                             </button>
                             <div class="text-center mt-4">
-                                <h6>Belum Memiliki Email?<a href="<?= base_url(''); ?>">Update Sekarang</a></h6>
+                                <h6>Ingin Update Data Memberwha?<a href="<?= base_url('index.php/member/login'); ?>">Update Sekarang</a></h6>
                             </div>
                             <?= form_close(); ?>
                         </div>

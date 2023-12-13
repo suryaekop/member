@@ -48,7 +48,7 @@
                             <?php if(isset($member)){
                             foreach($member as $mb => $data){
                                 ?>
-                                <input type="text" name="email" id="email" value="<?=$data['email']?>" placeholder="Masukkan Email">
+                                <input type="text" name="email" id="email" value="<?=$data['email']?>" placeholder="Masukkan Email" readonly>
                                 <?php
                             }
                         }
@@ -64,7 +64,7 @@
                             <?php if(isset($member)){
                             foreach($member as $mb => $data){
                                 ?>
-                                <textarea name="alamat" id="alamat" cols="20" rows="10"></textarea>
+                                <textarea name="alamat" id="alamat" cols="20" rows="10"><?=$data['alamat']?></textarea>
                                 <?php
                             }
                         }

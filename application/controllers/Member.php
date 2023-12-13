@@ -8,7 +8,7 @@ class Member extends CI_Controller {
         $this->load->model('member_model','member');
         $this->load->model('transaksi_model','transaksi');
     }
-	public function index()
+	public function login()
 	{
         $data['title'] = "Update Member";
         $data['members'] = $this->member->find_all();
@@ -44,38 +44,29 @@ class Member extends CI_Controller {
         }
     public function edit_member(){
         $this->form_validation->set_rules("namamember","Nama Member","required");
-        $this->form_validation->set_rules("nomor","Nomor","required");
-        $this->form_validation->set_rules("email","Email","required|callback_check_unique_email");
         $this->form_validation->set_rules("alamat","Alamat","required");
         $this->form_validation->set_rules("jeniskelamin","Jenis Kelamin","required");
         $this->form_validation->set_rules("tanggallahir","Tanggal Lahir","required");
         $this->form_validation->set_rules("tempatlahir","Tempat Lahir","required");
-        $this->form_validation->set_rules("poin","Poin","required");
         if($this->form_validation->run() == FALSE){
             echo validation_errors();
         }else{
             $namamember = $this->input->post("namamember");
-            $nomor = $this->input->post("nomor");
-            $email = $this->input->post("email");
             $alamat = $this->input->post("alamat");
             $jeniskelamin = $this->input->post("jeniskelamin");
             $tanggallahir = $this->input->post("tanggallahir");
             $tempatlahir = $this->input->post("tempatlahir");
-            $poin = $this->input->post("poin");
             $data = array(
                 'namamember' => $namamember,
-                'nomor' => $nomor,
-                'email' => $email,
                 'alamat' => $alamat,
                 'jeniskelamin' => $jeniskelamin,
                 'tanggallahir' => $tanggallahir,
                 'tempatlahir' => $tempatlahir,
-                'poin' => $poin,
             );
             $this->db->where('nomor',$nomor);
             $this->db->update('member',$data);
             $this->session->set_flashdata('pesan','<div class="alert alert-success" role="alert">Data Berhasil Diupdate</div>');
-            redirect('member/login');
+            redirect('member');
         }
     }
     public function check_unique_email($email){
@@ -88,10 +79,51 @@ class Member extends CI_Controller {
             return TRUE;
         }
     }
-    public function login()
+    public function index()
 	{
         $data['title'] = "Login Member";
-		$this->template->load('templates/auth','auth/login', $data);
+		$this->template->load('templates/authLogin','auth/login', $data);
 	}
+    public function login_member()
+    {
+        $this->load->library('email');
+        $this->form_validation->set_rules("email","Email","required");
+        if($this->form_validation->run() == TRUE){
+            $email = $this->input->post('email');
+
+            $otp = mt_rand(100000,999999);
+
+            $this->member->save_otp($email,$otp);
+            $this->email->from('surya.eko.pra@gmail.com', 'Surya Eko');
+            $this->email->to($email);
+            $this->email->reply_to('surya.eko.pra@gmail.com', 'Surya Eko');
+            $this->email->subject('Login OTP');
+            $this->email->message('Your OTP for login into system is: ' . $otp);
+
+            if ($this->email->send()) {
+                redirect('member/verify_otp');
+            } else {
+                echo "Email Gagal Dikirimkan";
+                echo $this->email->print_debugger();
+            }
+            
+        }else{
+            echo "Email Gagal Dikirimkan";
+        }
+    }
+    public function verify_otp(){
+        $data['title'] = "Verify OTP";
+		$this->template->load('templates/authVerify','member/verifOtp', $data);
+    }
+    public function proses_verify(){
+        
+            $otp = $this->input->post("otp");
+            redirect('member/dashboard');
+        }
+
+        public function dashboard(){
+            $this->load->view('member/dashboard');
+        }
+    }
     
-}
+

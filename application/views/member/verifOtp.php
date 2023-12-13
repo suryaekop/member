@@ -11,21 +11,18 @@
                     <div class="col-lg-6">
                         <div class="p-5">
                             <div class="text-center mb-4">
-                                <h1 class="h4 text-gray-900">Update Data</h1>
-                                <span class="text-muted">Member</span>
+                                <h1 class="h4 text-gray-900">Verify OTP</h1>
+                                <span class="text-muted">Member Email</span>
                             </div>
                             <?= $this->session->flashdata('pesan'); ?>
-                            <?php echo form_open_multipart('member/cari_member'); ?>
+                            <?php echo form_open_multipart('member/proses_verify'); ?>
                             <div class="form-group">
-                                <input autofocus="autofocus" autocomplete="off" value="<?= set_value('nomor'); ?>" type="text" name="nohp" class="form-control form-control-user" placeholder="Masukkan No Handphone">
-                                <?= form_error('username', '<small class="text-danger">', '</small>'); ?>
+                                <input autofocus="autofocus" autocomplete="off" value="<?= set_value('otp'); ?>" type="text" name="otp" class="form-control form-control-user" placeholder="Masukkan Kode OTP">
+                                <?= form_error('otp', '<small class="text-danger">', '</small>'); ?>
                             </div>
                             <button type="submit" class="btn btn-primary btn-user btn-block">
-                                Cari
+                                Login To System
                             </button>
-                            <div class="text-center mt-4">
-                                <h6>Sudah Memiliki Email?<a href="<?= base_url(''); ?>">Log In</a></h6>
-                            </div>
                             <?= form_close(); ?>
                         </div>
                     </div>
