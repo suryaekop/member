@@ -10,6 +10,7 @@
     <meta name="author" content="">
 
     <title>Member Resto</title>
+    <link rel="icon" href="<?= base_url(); ?>assets/img/food.ico" type="image/x-icon">
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo base_url('assets/');?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

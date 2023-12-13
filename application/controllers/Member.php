@@ -8,6 +8,12 @@ class Member extends CI_Controller {
         $this->load->model('member_model','member');
         $this->load->model('transaksi_model','transaksi');
     }
+    private function _has_login()
+    {
+        if (!$this->session->has_userdata('logged_email')) {
+            redirect('member');
+        }
+    }
 	public function login()
 	{
         $data['title'] = "Update Member";
@@ -26,6 +32,7 @@ class Member extends CI_Controller {
     }
 
     public function detail(){
+        $this->_has_login();
         $data['title'] = "Detail Member";
         $id = $this->uri->segment('3');
         $data['members'] = $this->member->cari_detail_id($id);
@@ -153,6 +160,7 @@ class Member extends CI_Controller {
         }
 
         public function dashboard(){
+            $this->_has_login();
             $email = $this->session->userdata('logged_email');
             $data['member'] = $this->member->get_member_by_email($email);
             $this->load->view('member/dashboard',$data);
@@ -183,6 +191,7 @@ class Member extends CI_Controller {
         set_pesan('anda telah berhasil logout');
         redirect('member');
     }
+    
     }
     
 

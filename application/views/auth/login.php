@@ -14,6 +14,7 @@
                                 <h1 class="h4 text-gray-900">Login</h1>
                                 <span class="text-muted">Member</span>
                             </div>
+                            <?= $this->session->flashdata('pesan'); ?>
                             <?php if (!empty($error)) : ?>
                              <div class="alert alert-danger" role="alert">
                                 <?= $error ?>
