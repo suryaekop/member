@@ -67,5 +67,56 @@ class Member_model extends CI_Model{
         $this->db->where('email', $email);
         $this->db->update('member', $data); // Replace 'members' with your actual table name
     }
+    public function get_user_data($email) {
+        // Assuming 'users' is your table name
+        $this->db->where('email', $email);
+        $query = $this->db->get('member');
+
+        if ($query->num_rows() == 1) {
+            return $query->row_array();
+        } else {
+            return false; // User not found
+        }
+    }
+    public function verify_otp_and_get_data($email, $otp)
+    {
+        // Check if the provided OTP matches the stored OTP for the given email
+        $this->db->where('email', $email);
+        $this->db->where('otp', $otp);
+        $query = $this->db->get('member');
+
+        if ($query->num_rows() == 1) {
+            // OTP is valid, fetch member data
+            $member_data = $query->row_array();
+            // Optionally, you may want to clear the OTP after successful verification
+            $this->clear_otp($email);
+
+            return $member_data;
+        } else {
+            // OTP is invalid
+            return false;
+        }
+    }
+
+    private function clear_otp($email)
+    {
+        // Clear the OTP for the given email
+        $this->db->where('email', $email);
+        $this->db->update('member', ['otp' => null]);
+    }
+    public function email_exists($email)
+    {
+        $this->db->where('email', $email);
+        $query = $this->db->get('member'); // replace 'your_member_table_name' with your actual table name
+
+        return $query->num_rows() > 0;
+    }
+    public function get_member_by_email($email)
+    {
+        $this->db->where('email', $email);
+        $query = $this->db->get('member'); // replace 'your_member_table_name' with your actual table name
+
+        return $query->row(); // Assuming you expect only one row
+    }
     
 }

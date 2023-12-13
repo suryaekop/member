@@ -70,26 +70,28 @@
                         }
                         ?>
                         </div>
-                        <?= form_error('username', '<small class="text-danger">', '</small>'); ?>
+                        <?= form_error('alamat', '<small class="text-danger">', '</small>'); ?>
                     </div>
                 </div>
                 <div class="row form-group">
-                    <label class="col-md-3 text-md-right" for="username">Jenis Kelamin</label>
+                    <label class="col-md-3 text-md-right" for="jeniskelamin">Jenis Kelamin</label>
                     <div class="col-md-9">
                         <div class="input-group">
-                            <?php if(isset($member)){
-                            foreach($member as $mb => $data){
-                                ?>
-                            <select name="jeniskelamin" id="jeniskelamin">
-                                <option value="L">Laki-Laki</option>
-                                <option value="P">Perempuan</option>
-                            </select>
-                                <?php
-                            }
-                        }
-                        ?>
+                            <?php if(isset($member) && count($member) > 0) { ?>
+                                <select name="jeniskelamin" id="jeniskelamin">
+                                    <?php foreach($member as $data) { ?>
+                                        <option value="L" <?php echo ($data['jeniskelamin'] == 'L') ? 'selected' : ''; ?>>Laki-Laki</option>
+                                        <option value="P" <?php echo ($data['jeniskelamin'] == 'P') ? 'selected' : ''; ?>>Perempuan</option>
+                                    <?php } ?>
+                                </select>
+                            <?php } else { ?>
+                                <select name="jeniskelamin" id="jeniskelamin">
+                                    <option value="L">Laki-Laki</option>
+                                    <option value="P">Perempuan</option>
+                                </select>
+                            <?php } ?>
                         </div>
-                        <?= form_error('username', '<small class="text-danger">', '</small>'); ?>
+                        <?= form_error('jeniskelamin', '<small class="text-danger">', '</small>'); ?>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -115,7 +117,7 @@
                             <?php if(isset($member)){
                             foreach($member as $mb => $data){
                                 ?>
-                                <input type="date" name="tanggallahir" id="tanggallahir">
+                                <input type="date" name="tanggallahir" id="tanggallahir" value="<?= $data['tanggallahir'] ?>">
                                 <?php
                             }
                         }

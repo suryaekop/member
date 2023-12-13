@@ -14,7 +14,11 @@
                                 <h1 class="h4 text-gray-900">Verify OTP</h1>
                                 <span class="text-muted">Member Email</span>
                             </div>
-                            <?= $this->session->flashdata('pesan'); ?>
+                            <?php if (!empty($error)) : ?>
+                             <div class="alert alert-danger" role="alert">
+                                <?= $error ?>
+                                </div>
+                            <?php endif; ?>
                             <?php echo form_open_multipart('member/proses_verify'); ?>
                             <div class="form-group">
                                 <input autofocus="autofocus" autocomplete="off" value="<?= set_value('otp'); ?>" type="text" name="otp" class="form-control form-control-user" placeholder="Masukkan Kode OTP">

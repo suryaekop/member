@@ -44,25 +44,35 @@ class Member extends CI_Controller {
         }
     public function edit_member(){
         $this->form_validation->set_rules("namamember","Nama Member","required");
+        $this->form_validation->set_rules("nomor","Nomor","required");
         $this->form_validation->set_rules("alamat","Alamat","required");
+        $this->form_validation->set_rules("email","Email","required");
         $this->form_validation->set_rules("jeniskelamin","Jenis Kelamin","required");
         $this->form_validation->set_rules("tanggallahir","Tanggal Lahir","required");
         $this->form_validation->set_rules("tempatlahir","Tempat Lahir","required");
+        $this->form_validation->set_rules("poin","Poin","required");
         if($this->form_validation->run() == FALSE){
             echo validation_errors();
         }else{
             $namamember = $this->input->post("namamember");
+            $nomor = $this->input->post("nomor");
             $alamat = $this->input->post("alamat");
+            $email = $this->input->post("email");
             $jeniskelamin = $this->input->post("jeniskelamin");
             $tanggallahir = $this->input->post("tanggallahir");
             $tempatlahir = $this->input->post("tempatlahir");
+            $poin = $this->input->post("poin");
             $data = array(
                 'namamember' => $namamember,
+                'nomor' => $nomor,
                 'alamat' => $alamat,
+                'email' => $email,
                 'jeniskelamin' => $jeniskelamin,
                 'tanggallahir' => $tanggallahir,
                 'tempatlahir' => $tempatlahir,
+                'poin' => $poin
             );
+            var_dump($data);
             $this->db->where('nomor',$nomor);
             $this->db->update('member',$data);
             $this->session->set_flashdata('pesan','<div class="alert alert-success" role="alert">Data Berhasil Diupdate</div>');
@@ -82,23 +92,28 @@ class Member extends CI_Controller {
     public function index()
 	{
         $data['title'] = "Login Member";
+        $data['error'] = $this->session->flashdata('error');
 		$this->template->load('templates/authLogin','auth/login', $data);
 	}
     public function login_member()
     {
-        $this->load->library('email');
-        $this->form_validation->set_rules("email","Email","required");
-        if($this->form_validation->run() == TRUE){
-            $email = $this->input->post('email');
+    $this->load->library('email');
+    $this->form_validation->set_rules("email", "Email", "required");
 
-            $otp = mt_rand(100000,999999);
+    if ($this->form_validation->run() == TRUE) {
 
-            $this->member->save_otp($email,$otp);
+        $email = $this->input->post('email');
+        // Check if email exists
+        if ($this->member->email_exists($email)) {
+            $otp = mt_rand(100000, 999999);
+
+            $this->member->save_otp($email, $otp);
+            $this->session->set_userdata('logged_email', $email);
             $this->email->from('surya.eko.pra@gmail.com', 'Surya Eko');
             $this->email->to($email);
             $this->email->reply_to('surya.eko.pra@gmail.com', 'Surya Eko');
             $this->email->subject('Login OTP');
-            $this->email->message('Your OTP for login into system is: ' . $otp);
+            $this->email->message('Your OTP for login into the system is: ' . $otp);
 
             if ($this->email->send()) {
                 redirect('member/verify_otp');
@@ -106,23 +121,41 @@ class Member extends CI_Controller {
                 echo "Email Gagal Dikirimkan";
                 echo $this->email->print_debugger();
             }
-            
-        }else{
-            echo "Email Gagal Dikirimkan";
-        }
-    }
-    public function verify_otp(){
-        $data['title'] = "Verify OTP";
-		$this->template->load('templates/authVerify','member/verifOtp', $data);
-    }
-    public function proses_verify(){
+        } else {
+            // Email does not exist, redirect to login page
+            $this->session->set_flashdata('error', 'Email Not Found');
+            redirect('');
         
+        }
+    } else {
+        echo "Email Gagal Dikirimkan";
+    }
+} 
+        public function verify_otp(){
+        $data['title'] = "Verify OTP";
+        $data['error'] = $this->session->flashdata('error');
+		$this->template->load('templates/authVerify','member/verifOtp', $data);
+        }
+        public function proses_verify(){
             $otp = $this->input->post("otp");
-            redirect('member/dashboard');
+            $email = $this->session->userdata('logged_email');
+
+            $memberdata = $this->member->verify_otp_and_get_data($email,$otp);
+
+            if($memberdata){
+                $this->session->set_userdata('memberdata',$memberdata);
+                redirect('member/dashboard');
+            }else{
+                $this->session->set_flashdata('error', 'Incorrect OTP. Please try again.');
+                redirect('member/verify_otp');
+            }
+            
         }
 
         public function dashboard(){
-            $this->load->view('member/dashboard');
+            $email = $this->session->userdata('logged_email');
+            $data['member'] = $this->member->get_member_by_email($email);
+            $this->load->view('member/dashboard',$data);
         }
     }
     
