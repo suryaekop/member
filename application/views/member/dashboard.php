@@ -64,7 +64,7 @@
                         <td>Total Poin</td>
                         <td>:</td>
                         <td><strong><?= $member->poin ?></strong></td>
-                        <td><a href="" class="btn btn-success">Riwayat Transaksi</a></td>
+                        <td><a href="<?= base_url('member/getTransaksi') ?>" class="btn btn-success">Riwayat Transaksi</a></td>
                     </tr>
                 </table>
                 <?php endif; ?>

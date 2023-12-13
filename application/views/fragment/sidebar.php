@@ -21,7 +21,7 @@
                     <span>Profile</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="<?= base_url('member/getTransaksi') ?>">
                     <i class="fas fa-book"></i>
                     <span>Riwayat Transaksi</span></a>
             </li>

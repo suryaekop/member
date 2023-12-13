@@ -157,6 +157,32 @@ class Member extends CI_Controller {
             $data['member'] = $this->member->get_member_by_email($email);
             $this->load->view('member/dashboard',$data);
         }
+        public function getTransaksi(){
+            $email = $this->session->userdata('logged_email');
+
+            // 2. Dapatkan ID member berdasarkan email
+            $idMember = $this->member->getIdMemberByEmail($email);
+        
+            // 3. Ambil transaksi berdasarkan ID member
+            if ($idMember !== null) {
+                $transaksiData = $this->transaksi->getTransaksiByIdMemberWithDetails($idMember);
+                $data['trans'] = $transaksiData;
+                // 4. Tampilkan view
+                $this->load->view('member/history', $data);
+            } else {
+                // Handle case where ID member is not found for the given email
+                // You might want to show an error message or redirect the user
+                echo "Member not found for the given email.";
+            }
+        
+        }
+        public function logout()
+        {
+        $this->session->unset_userdata('logged_email');
+
+        set_pesan('anda telah berhasil logout');
+        redirect('member');
+    }
     }
     
 

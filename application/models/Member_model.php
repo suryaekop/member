@@ -118,5 +118,13 @@ class Member_model extends CI_Model{
 
         return $query->row(); // Assuming you expect only one row
     }
+    public function getIdMemberByEmail($email) {
+        $this->db->select('id');
+        $this->db->where('email', $email);
+        $query = $this->db->get('member'); // Gantilah 'nama_tabel_member' dengan nama tabel sesuai dengan struktur database Anda.
+
+        $result = $query->row();
+        return $result ? $result->id : null;
+    }
     
 }
