@@ -83,7 +83,7 @@ class Member extends CI_Controller {
             $this->db->where('nomor',$nomor);
             $this->db->update('member',$data);
             $this->session->set_flashdata('pesan','<div class="alert alert-success" role="alert">Data Berhasil Diupdate</div>');
-            redirect('member');
+            redirect('member/dashboard');
         }
     }
     public function check_unique_email($email){
@@ -103,8 +103,10 @@ class Member extends CI_Controller {
 		$this->template->load('templates/authLogin','auth/login', $data);
 	}
     public function login_member()
-    {
+{
     $this->load->library('email');
+    $this->load->library('phpmailer_lib'); // Load the PHPMailer library
+
     $this->form_validation->set_rules("email", "Email", "required");
 
     if ($this->form_validation->run() == TRUE) {
@@ -116,28 +118,45 @@ class Member extends CI_Controller {
 
             $this->member->save_otp($email, $otp);
             $this->session->set_userdata('logged_email', $email);
-            $this->email->from('surya.eko.pra@gmail.com', 'Surya Eko');
-            $this->email->to($email);
-            $this->email->reply_to('surya.eko.pra@gmail.com', 'Surya Eko');
-            $this->email->subject('Login OTP');
-            $this->email->message('Your OTP for login into the system is: ' . $otp);
 
-            if ($this->email->send()) {
+            // Use PHPMailer to send email
+            $mail = $this->phpmailer_lib->load(); // Initialize PHPMailer
+
+            $mail->setFrom('cs@terasjapan.com', 'Teras Japan CS');
+            $mail->addAddress($email);
+            $mail->addReplyTo('cs@terasjapan.com', 'Teras Japan CS');
+            $mail->Subject = 'Login OTP';
+            $mail->Body =
+            'PERHATIAN!
+            JANGAN BERIKAN kode ini kepada siapa pun, 
+            TERMASUK TIM TERAS JAPAN. 
+            WASPADA PENIPUAN! 
+            Untuk MASUK KE AKUM MEMBER TERAS JAPAN, masukkan kode RAHASIA: ' . $otp;
+
+            // SMTP Configuration
+            $mail->isSMTP();
+            $mail->Host = 'srv125.niagahoster.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'cs@terasjapan.com';
+            $mail->Password = 'customerserviceBSD';
+            $mail->SMTPSecure = 'tls'; // You can change it to 'ssl' if needed
+            $mail->Port = 587; // You can use port 465 for SSL
+
+            if ($mail->send()) {
                 redirect('member/verify_otp');
             } else {
                 echo "Email Gagal Dikirimkan";
-                echo $this->email->print_debugger();
+                echo $mail->ErrorInfo;
             }
         } else {
             // Email does not exist, redirect to login page
             $this->session->set_flashdata('error', 'Email Not Found');
             redirect('');
-        
         }
     } else {
         echo "Email Gagal Dikirimkan";
     }
-} 
+}
         public function verify_otp(){
         $data['title'] = "Verify OTP";
         $data['error'] = $this->session->flashdata('error');
@@ -190,6 +209,12 @@ class Member extends CI_Controller {
 
         set_pesan('anda telah berhasil logout');
         redirect('member');
+    }
+    public function edit(){
+        $this->_has_login();
+        $email = $this->session->userdata('logged_email');
+        $data['member'] = $this->member->get_member_by_email($email);
+        $this->load->view('member/edit',$data);
     }
     
     }

@@ -3,7 +3,7 @@
 
     <div class="col-xl-10 col-lg-12 col-md-9">
 
-        <div class="card o-hidden border-0 shadow-lg">
+        <div class="card border-0 w-100 h-100 bg-transparent">
             <div class="card-body p-lg-5 p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">

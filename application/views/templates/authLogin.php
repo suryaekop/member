@@ -21,15 +21,15 @@
 
     <style>
         .bg-login-image {
-            background-image: url("<?= base_url('assets/img1/login.jpg'); ?>");
+            background-image: url("<?= base_url('assets/img1/logo.png'); ?>");
             background-repeat: no-repeat;
-            background-size: 80%;
+            background-size: 75%;
         }
     </style>
 </head>
 
 
-<body class="bg-gradient-success">
+<body style="background-color: skyblue">
 
     <div class="container">
 

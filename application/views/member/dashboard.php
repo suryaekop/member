@@ -16,6 +16,16 @@
                         </h4>
                         <?php endif; ?>
                     </div>
+                    <div class="col-auto">
+                        <a href="<?= base_url('member/edit'); ?>" class="btn btn-sm btn-primary btn-icon-split">
+                        <span class="icon">
+                        <i class="fa fa-user-plus"></i>
+                        </span>
+                            <span class="text">
+                                Update Member
+                            </span>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">

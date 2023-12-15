@@ -25,8 +25,9 @@
                     <th>Tanggal Transaksi</th>
                     <th>Nama Cabang</th>
                     <th>Total Pembelian</th>
+                    <th>Nama Kasir</th>
                     <th>Konversi Poin</th>
-                    <th>Total Poin</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -40,8 +41,8 @@
                             <td><?= $tran->tanggaltransaksi ?></td>
                             <td><?= $tran->namacabang ?></td>
                             <td><?= $tran->total ?></td>
+                            <td><?= $tran->nama ?></td>
                             <td><?= isset($tran->konversipoin) ? $tran->konversipoin : ''; ?></td>
-                            <td><?= isset($tran->totalpoin) ? $tran->totalpoin : ''; ?></td>
                         </tr>
                         <?php
                     }?>

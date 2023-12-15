@@ -36,10 +36,11 @@ class Transaksi_model extends CI_Model {
         return $this->db->insert($this->table, $data);
     }
     public function getTransaksiByIdMemberWithDetails($idMember) {
-        $this->db->select('transaksi.*, cabang.namacabang, member.namamember');
+        $this->db->select('transaksi.*, cabang.namacabang, member.namamember,user.nama');
         $this->db->from('transaksi');
         $this->db->join('cabang', 'cabang.id = transaksi.nocabang');
         $this->db->join('member', 'member.id = transaksi.idmember');
+        $this->db->join('user', 'user.id_user = transaksi.iduser');
         $this->db->where('transaksi.idmember', $idMember);
         $query = $this->db->get();
         $result = $query->result();
