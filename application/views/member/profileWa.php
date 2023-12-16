@@ -32,7 +32,7 @@
                                     <tr style="font-size: 16pt;">
                                         <td>Saldo</td>
                                         <td>:</td>
-                                        <td><?= $member->tempatlahir ?></td>
+                                        <td>Rp. <?= $member->saldo ?></td>
                                     </tr>
                                     <tr style="font-size: 16pt;">
                                         <td>Total Poin</td>

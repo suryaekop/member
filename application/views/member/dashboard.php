@@ -70,12 +70,6 @@
                         <td>:</td>
                         <td><strong><?= $member->tempatlahir ?></strong></td>
                     </tr>
-                    <tr>
-                        <td>Total Poin</td>
-                        <td>:</td>
-                        <td><strong><?= $member->poin ?></strong></td>
-                        <td><a href="<?= base_url('member/getTransaksi') ?>" class="btn btn-success">Riwayat Transaksi</a></td>
-                    </tr>
                 </table>
                 <?php endif; ?>
             </div>
