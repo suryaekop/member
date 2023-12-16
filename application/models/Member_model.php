@@ -67,6 +67,15 @@ class Member_model extends CI_Model{
         $this->db->where('email', $email);
         $this->db->update('member', $data); // Replace 'members' with your actual table name
     }
+    public function save_otp_wa($nomor, $otp) {
+        $data = array(
+            'otp' => $otp,
+            'otp_created_at' => date('Y-m-d H:i:s'),
+        );
+
+        $this->db->where('nomor', $nomor);
+        $this->db->update('member', $data); // Replace 'members' with your actual table name
+    }
     public function get_user_data($email) {
         // Assuming 'users' is your table name
         $this->db->where('email', $email);
@@ -97,6 +106,25 @@ class Member_model extends CI_Model{
             return false;
         }
     }
+    public function verify_otp_and_get_data_wa($nomor, $otp)
+    {
+        // Check if the provided OTP matches the stored OTP for the given email
+        $this->db->where('nomor', $nomor);
+        $this->db->where('otp', $otp);
+        $query = $this->db->get('member');
+
+        if ($query->num_rows() == 1) {
+            // OTP is valid, fetch member data
+            $member_data = $query->row_array();
+            // Optionally, you may want to clear the OTP after successful verification
+            $this->clear_otp_wa($nomor);
+
+            return $member_data;
+        } else {
+            // OTP is invalid
+            return false;
+        }
+    }
 
     private function clear_otp($email)
     {
@@ -104,9 +132,22 @@ class Member_model extends CI_Model{
         $this->db->where('email', $email);
         $this->db->update('member', ['otp' => null]);
     }
+    private function clear_otp_wa($nomor)
+    {
+        // Clear the OTP for the given email
+        $this->db->where('nomor', $nomor);
+        $this->db->update('member', ['otp' => null]);
+    }
     public function email_exists($email)
     {
         $this->db->where('email', $email);
+        $query = $this->db->get('member'); // replace 'your_member_table_name' with your actual table name
+
+        return $query->num_rows() > 0;
+    }
+    public function exists_phone($nomor)
+    {
+        $this->db->where('nomor', $nomor);
         $query = $this->db->get('member'); // replace 'your_member_table_name' with your actual table name
 
         return $query->num_rows() > 0;
@@ -118,9 +159,24 @@ class Member_model extends CI_Model{
 
         return $query->row(); // Assuming you expect only one row
     }
+    public function get_member_by_phone($nomor)
+    {
+        $this->db->where('nomor', $nomor);
+        $query = $this->db->get('member'); // replace 'your_member_table_name' with your actual table name
+
+        return $query->row(); // Assuming you expect only one row
+    }
     public function getIdMemberByEmail($email) {
         $this->db->select('id');
         $this->db->where('email', $email);
+        $query = $this->db->get('member'); // Gantilah 'nama_tabel_member' dengan nama tabel sesuai dengan struktur database Anda.
+
+        $result = $query->row();
+        return $result ? $result->id : null;
+    }
+    public function getIdMemberByPhone($nomor) {
+        $this->db->select('id');
+        $this->db->where('nomor', $nomor);
         $query = $this->db->get('member'); // Gantilah 'nama_tabel_member' dengan nama tabel sesuai dengan struktur database Anda.
 
         $result = $query->row();

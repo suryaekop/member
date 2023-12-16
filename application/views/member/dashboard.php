@@ -30,7 +30,7 @@
             </div>
             <div class="card-body">
                 <?= $this->session->flashdata('pesan'); ?>
-                <img src="<?= base_url() ?>assets/img1/avatar/user.png" alt="User Cw" width="150" height="150">
+                <img src="<?= base_url() . '/fotouser/' . $member->foto; ?>" alt="User Cw" width="150" height="150">
                 <br>
                 <br>
                 <table>

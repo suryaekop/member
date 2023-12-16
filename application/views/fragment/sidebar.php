@@ -16,13 +16,18 @@
             </div>
             <!-- Nav Item - Tables -->
             <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('member/profile') ?>">
+                <i class="fas fa-home"></i>
+                    <span>Home</span></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('member/dashboard') ?>">
-                    <i class="fas fa-book"></i>
+                    <i class="fas fa-user"></i>
                     <span>Profile</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('member/getTransaksi') ?>">
-                    <i class="fas fa-book"></i>
+                <i class="fas fa-money-check-alt"></i>
                     <span>Riwayat Transaksi</span></a>
             </li>
             <!-- Divider -->

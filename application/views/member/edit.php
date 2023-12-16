@@ -14,7 +14,7 @@
                         </h4>
                     </div>
                     <div class="col-auto">
-                        <a href="<?= base_url('member') ?>" class="btn btn-sm btn-secondary btn-icon-split">
+                        <a href="<?= base_url('member/dashboard') ?>" class="btn btn-sm btn-secondary btn-icon-split">
                             <span class="icon">
                                 <i class="fa fa-arrow-left"></i>
                             </span>
@@ -29,8 +29,22 @@
                 <?= $this->session->flashdata('pesan'); ?>
                 <?php echo form_open_multipart('member/edit_member'); ?>
                 <!-- Tambahkan input hidden untuk menyimpan ID member -->
-                
-                
+                <div class="row form-group">
+                    <label class="col-md-3 text-md-right" for="foto">Foto</label>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-6">
+                            <?php if ($member) : ?>
+                                <img src="<?= base_url() . '/fotouser/' . $member->foto ?>" alt="User" class="rounded-circle shadow-sm img-thumbnail">
+                                <?php endif; ?>
+                            </div>
+                            <div class="col-6">
+                                <input type="file" name="foto" id="foto">
+                                <?= form_error('foto', '<small class="text-danger">', '</small>'); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row form-group">
                     <label class="col-md-4 text-md-right" for="namamember">Nama Member</label>
                     <div class="col-md-6">
@@ -84,13 +98,6 @@
                     <div class="col-md-6">
                         <input type="text" id="tempatlahir" name="tempatlahir" class="form-control" placeholder="tempatlahir" value="<?= $member->tempatlahir; ?>">
                         <?= form_error('tempatlahir', '<span class="text-danger small">', '</span>'); ?>
-                    </div>
-                </div>
-                <div class="row form-group">
-                    <label class="col-md-4 text-md-right" for="email">Poin</label>
-                    <div class="col-md-6">
-                        <input type="text" id="poin" name="poin" class="form-control" placeholder="poin" value="<?= $member->poin; ?>" readonly>
-                        <?= form_error('poin', '<span class="text-danger small">', '</span>'); ?>
                     </div>
                 </div>
                 <div class="row form-group justify-content-end">

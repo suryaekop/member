@@ -29,7 +29,7 @@
 </head>
 
 
-<body style="background-color: skyblue">
+<body style="background-image: url('<?= base_url('assets/img1/bg3.jpg') ?>'); background-size: cover; background-position: center;">
 
     <div class="container">
 
